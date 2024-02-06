@@ -1,5 +1,6 @@
 package com.dondon.simplebanking.helper;
 
+import com.dondon.simplebanking.exception.InvalidAccountTypeException;
 import com.dondon.simplebanking.model.Account;
 import com.dondon.simplebanking.model.CheckingAccount;
 import com.dondon.simplebanking.model.InterestAccount;
@@ -12,7 +13,7 @@ public class AccountFactory {
             case "regular" -> new RegularAccount(name);
             case "checking" -> new CheckingAccount(name);
             case "interest" -> new InterestAccount(name);
-            default -> null;
+            default -> throw new InvalidAccountTypeException("/accounts");
         };
     }
 }

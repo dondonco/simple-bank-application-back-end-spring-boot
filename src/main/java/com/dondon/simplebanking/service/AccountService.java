@@ -1,5 +1,8 @@
 package com.dondon.simplebanking.service;
 
+import com.dondon.simplebanking.exception.AccountNotFoundException;
+import com.dondon.simplebanking.exception.InvalidTransactionAmountException;
+import com.dondon.simplebanking.exception.InvalidTransactionTypeException;
 import com.dondon.simplebanking.helper.AccountFactory;
 import com.dondon.simplebanking.model.Account;
 import com.dondon.simplebanking.repository.AccountRepository;
@@ -24,7 +27,7 @@ public class AccountService implements IAccountService{
 
     @Override
     public Account getAccount(Long id) {
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id).orElseThrow(() -> new AccountNotFoundException("/accounts/" + id));
     }
 
     @Override
@@ -36,10 +39,12 @@ public class AccountService implements IAccountService{
     public Account transaction(Long id, RequestTransaction transaction) {
         Account account = getAccount(id);
         double amount = transaction.getAmount();
+        String message = "/accounts/" + id + "/transactions";
+        if(amount <= 0) throw new InvalidTransactionAmountException(message);
         Double balance = switch (transaction.getType()) {
             case "withdraw" -> account.getBalance() - amount;
             case "deposit" -> account.getBalance() + amount;
-            default -> null;
+            default -> throw new InvalidTransactionTypeException(message);
         };
         account.setBalance(transactionProcessValue(balance, account));
         return repository.save(account);
