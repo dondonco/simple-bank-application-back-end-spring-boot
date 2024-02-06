@@ -2,6 +2,7 @@ package com.dondon.simplebanking.service;
 
 import com.dondon.simplebanking.model.Account;
 import com.dondon.simplebanking.request.RequestCreateAccount;
+import com.dondon.simplebanking.request.RequestTransaction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface IAccountService {
 
     List<Account> getAllAccount();
 
-    void transaction();
+    Account transaction(Long id, RequestTransaction transaction);
 
     void deleteAccount(Long id);
 }
