@@ -1,11 +1,15 @@
 package com.dondon.simplebanking.model;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class InterestAccount extends Account {
 
-    private final Double INTEREST_CHARGE = 3.0;
+    public InterestAccount() {}
+
 
     public InterestAccount(String name) {
         super(name);
-        this.setInterestCharge(INTEREST_CHARGE);
+        this.setInterestCharge(0.03);
     }
 }

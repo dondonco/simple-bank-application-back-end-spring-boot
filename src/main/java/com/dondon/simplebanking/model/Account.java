@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 
+import java.util.Random;
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @JsonTypeInfo(
@@ -13,8 +15,8 @@ import jakarta.persistence.*;
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = RegularAccount.class, name = "regular"),
-        @JsonSubTypes.Type(value = CheckingAccount.class, name = "regular"),
-        @JsonSubTypes.Type(value = InterestAccount.class, name = "regular")
+        @JsonSubTypes.Type(value = CheckingAccount.class, name = "checking"),
+        @JsonSubTypes.Type(value = InterestAccount.class, name = "interest")
 })
 public abstract class Account {
 
@@ -26,20 +28,23 @@ public abstract class Account {
 
     private String acctNumber;
 
-    private Double balance;
+    private double balance;
 
-    private Double minimumBalance;
+    private double minimumBalance;
 
-    private Double penalty;
+    private double penalty;
 
-    private Double transactionCharge;
+    private double transactionCharge;
 
-    private Double interestCharge;
+    private double interestCharge;
 
 //    private Double amount;
 
+    public Account() {}
+
     public Account(String name) {
         this.name = name;
+        this.acctNumber = generateAccountNumber();
     }
 
     public Long getId() {
@@ -66,43 +71,43 @@ public abstract class Account {
         this.acctNumber = acctNumber;
     }
 
-    public Double getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
-    public Double getMinimumBalance() {
+    public double getMinimumBalance() {
         return minimumBalance;
     }
 
-    public void setMinimumBalance(Double minimumBalance) {
+    public void setMinimumBalance(double minimumBalance) {
         this.minimumBalance = minimumBalance;
     }
 
-    public Double getPenalty() {
+    public double getPenalty() {
         return penalty;
     }
 
-    public void setPenalty(Double penalty) {
+    public void setPenalty(double penalty) {
         this.penalty = penalty;
     }
 
-    public Double getTransactionCharge() {
+    public double getTransactionCharge() {
         return transactionCharge;
     }
 
-    public void setTransactionCharge(Double transactionCharge) {
+    public void setTransactionCharge(double transactionCharge) {
         this.transactionCharge = transactionCharge;
     }
 
-    public Double getInterestCharge() {
+    public double getInterestCharge() {
         return interestCharge;
     }
 
-    public void setInterestCharge(Double interestCharge) {
+    public void setInterestCharge(double interestCharge) {
         this.interestCharge = interestCharge;
     }
 
@@ -113,4 +118,13 @@ public abstract class Account {
     public void setAmount(Double amount) {
         this.amount = amount;
     }*/
+
+    private String generateAccountNumber() {
+        StringBuilder output = new StringBuilder();
+        Random random = new Random();
+        for(int i = 0; i < 16; i++) {
+            output.append(random.nextInt(0, 10));
+        }
+        return  output.toString();
+    }
 }

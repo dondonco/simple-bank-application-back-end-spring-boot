@@ -2,17 +2,17 @@ package com.dondon.simplebanking.request;
 
 public class RequestTransaction {
 
-    private String transaction;
+    private String type;
 
     private Double amount;
 
-    public RequestTransaction(String transaction, Double amount) {
-        this.transaction = transaction;
+    public RequestTransaction(String type, Double amount) {
+        this.type = type;
         this.amount = amount;
     }
 
-    public String getTransaction() {
-        return transaction;
+    public String getType() {
+        return type;
     }
 
     public Double getAmount() {

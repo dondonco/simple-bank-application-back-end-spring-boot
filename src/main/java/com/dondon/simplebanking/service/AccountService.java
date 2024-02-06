@@ -36,12 +36,12 @@ public class AccountService implements IAccountService{
     public Account transaction(Long id, RequestTransaction transaction) {
         Account account = getAccount(id);
         double amount = transaction.getAmount();
-        Double balance = switch (transaction.getTransaction()) {
+        Double balance = switch (transaction.getType()) {
             case "withdraw" -> account.getBalance() - amount;
             case "deposit" -> account.getBalance() + amount;
             default -> null;
         };
-        account.setBalance(balance + transactionProcessValue(balance, account));
+        account.setBalance(transactionProcessValue(balance, account));
         return repository.save(account);
     }
 
@@ -54,6 +54,6 @@ public class AccountService implements IAccountService{
         double minimumBalance = account.getMinimumBalance();
         double transactionCharge = account.getTransactionCharge();
         double penaltyCharge = account.getPenalty();
-        return (balance <= minimumBalance ? balance - penaltyCharge : balance) - transactionCharge;
+        return (balance < minimumBalance ? balance - penaltyCharge : balance) - transactionCharge;
     }
 }
